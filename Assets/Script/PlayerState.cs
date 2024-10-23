@@ -2,16 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayerState : MonoBehaviour
+public abstract class PlayerState
 {
     protected PlayerStateMachine stateMachine;        //상태 머신에 대한 참조 (이후 구현)
     protected PlayerController playerController;        //플레이러 컨트롤러에 대한 참조
+    protected PlayerAnimationManager animationManager;  //애니메이션 매니저를 가져온다.
 
     //생성자: 상태 머신과 플레이어 컨트롤러 참조 초기화
     public PlayerState(PlayerStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
         this.playerController = stateMachine.PlayerController;
+        this.animationManager = stateMachine.GetComponent<PlayerAnimationManager>();
     }
 
     //가상 메서드들 : 하위 클래서에서 필요에 따라 오버라이드
@@ -30,7 +32,7 @@ public abstract class PlayerState : MonoBehaviour
             {
                 stateMachine.TransitionToState(new JumpingState(stateMachine));
             }
-            else if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Verctal") != 0)    //이동키가 눌렸을 때
+            else if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)    //이동키가 눌렸을 때
             {
                 stateMachine.TransitionToState(new MovingState(stateMachine));
             }
