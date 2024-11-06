@@ -25,7 +25,7 @@ public abstract class PlayerState
     //상태 전환과 조건을 체크하는 매서드
     protected void CheckTransition()
     {
-        if(playerController.isGround())
+        if(playerController.isGrounded())
         {
             //지상에 있을 때의 상태 전환 로직
             if (Input.GetKeyDown(KeyCode.Space))
