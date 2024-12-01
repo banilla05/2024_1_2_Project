@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class SurvivalStats : MonoBehaviour
@@ -40,12 +43,69 @@ public class SurvivalStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //게임 시작시 스탯들은 최대 인 상태로 시작
+        currentHunger = maxHunger;
+        currentSuitDurability = maxSuitDuravility;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isGameOver || isPaused) return;
+        hungerTimer += Time.deltaTime;
+
+        if(hungerTimer >= 1.0f)
+        {
+            currentHunger = Mathf.Max(0, currentHunger - hungerDecreaseRate);
+            hungerTimer = 0;
+
+            checkDeath();
+        }
+    }
+
+    private void CheckDeath()                       //플레이어 사망 처리 체크 함수
+    {
+        if(currentHunger <= 0 || currentSuitDurability <= 0)
+        {
+            PlayerDeath();
+        }
+    }
+
+    private void PlaterDeath()                      //플레이어 사망 함수
+    {
+        isGameOver = ture;
+        Debug.Log("플레이어 사망!");
+        //T0D0 : 사망 처리 추가 ( 게임오버 UI, 리스폰 등등)
+    }
+
+    //음식 섭취로 허기 회복
+    public void EatFood(float amount)
+    {
+        if (isGameOver || isPaused) return;
+
+        currentHunger = Mathf.Min(maxHunger, currentHunger + amount);
+
+        if (FloatingTextManger.Instance != null)
+        {
+            FloatingTextManager.Instance.Show($"허기 회복 수리 + {amount}", CryptoAPITransform.position + Vector3.up);
+        }
+    }
+
+    //아이템 수집시 우주복 데미지
+    public void DamageOnGarvesting()
+    {
+        if (isGameOver || isPaused) return;
+
+        currentSuitDurability = Mathf.Max(0, currentSuitDurability - havestingDamage);      //0값 이하로 안 내려가게 막기 위해서
+        CheckDeath();
+    }
+
+    //아이템 제작시 우주복 데미지
+    public void DamageOnCrafting()
+    {
+        if (isGameOver || isPaused) return;
+
+        currentSuitDurability = Mathf.Max(0, currentSuitDurability - havestingDamage);      //0값 이하로 안 내려가게 막기 위해서
+        CheckDeath();
     }
 }
