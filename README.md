@@ -1,2 +1,2 @@
-# 2024_1_2_Project
-1학년 2학기 프로젝트
+# SecondSemester_Project
+1학년 2학기 B반 문태현
