@@ -6,10 +6,10 @@ public class VehicleManager : MonoBehaviour
 {
     public Vehicle[] vehicles;
 
-    public Car car;
-    public Bicycle bicycle;        
+    public Car car;                 // 컴포넌트 선언
+    public Bicycle bicycle;         // 컴포넌트 선언
 
-    float Timer;
+    float Timer;                    // 타이머 선언
 
     void Update()
     {
@@ -21,14 +21,17 @@ public class VehicleManager : MonoBehaviour
             vehicles[i].Move();
         }
 
-        Timer -= Time.deltaTime;
-        if (Timer <= 0)
+        Timer -= Time.deltaTime;    // 타이머 카운트
+        if (Timer <= 0 )
         {
-            car.Horn();
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                vehicles[i].Horn();
+            }
+            //car.Horn();
+            //bicycle.Horn();
 
-            bicycle.Horn();
-
-            Timer = 1f;
+            Timer = 1.0f;           // 1초로 만들어 준다
         }
     }
 }
