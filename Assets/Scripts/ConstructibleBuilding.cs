@@ -13,7 +13,7 @@ public class ConstructibleBuilding : MonoBehaviour
     public bool canBuild = true;
     public bool isConstrcted = false;
 
-    private Material buildingMaterial;            //검물의 매
+    private Material buildingMaterial;                            //검물의 매
     void Start()
     {
         buildingMaterial = GetComponent<MeshRenderer>().material;
@@ -26,7 +26,7 @@ public class ConstructibleBuilding : MonoBehaviour
 
     public void StartConstruction(PlayerInventory inventory)
     {
-        if (!canBuild || isConstrcted) return;          //건설 가능, 완료 변수 체크하여 리턴시킨다.
+        if (!canBuild || isConstrcted) return;                      //건설 가능, 완료 변수 체크하여 리턴시킨다.
 
         if (inventory.treeCount >= requiredTree)
         {
@@ -66,7 +66,6 @@ public class ConstructibleBuilding : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         
