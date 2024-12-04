@@ -6,29 +6,30 @@ using TMPro;
 
 public class RecipeButton : MonoBehaviour
 {
-    [Header ("UI Reference")]
-    public TextMeshProUGUI recipeName;              // 레시피 이름
-    public TextMeshProUGUI materialsText;           // 필요 재료 텍스트
-    public Button craftButton;                // 제작 버튼
+    [Header("UI References")]
+    public TextMeshProUGUI recipeName;          //레시피 이름 
+    public TextMeshProUGUI materialsText;       //필요 재료 텍스트  
+    public Button craftButton;                  //제작 버튼
 
-    private CraftingRecipe recipe;                  // 레시피 데이터
-    private BuildingCrafter crafter;                // 건물의 제작 시스템
-    private PlayerInventory playerInventory;        // 플레이어 인벤토리
+    private CraftingRecipe recipe;              //레시피 데이터
+    private BuildingCrafter crafter;            //건물의 제작 시스템 
+    private PlayerInventory playerInventory;    //플레이어 인벤토리
 
     public void Setup(CraftingRecipe recipe, BuildingCrafter crafter)
     {
         this.recipe = recipe;
         this.crafter = crafter;
-        playerInventory = FindObjectOfType<PlayerInventory>();
+        playerInventory = FindAnyObjectByType<PlayerInventory>();
 
-        recipeName.text = recipe.itemName;
+        recipeName.text = recipe.itemName;        //레시피 정보 표시
+        UpdateMaterialsText();
 
-        craftButton.onClick.AddListener(OnCraftButtonClicked);
+        craftButton.onClick.AddListener(OnCraftButtonClicked);  //제작버튼에 이벤트 연결
     }
 
-    private void UpdateMaterialsText()          // 재료 정보 업데이트
+    private void UpdateMaterialsText()            //재료정보 업데이트
     {
-        string materials = "필요 재료 :\n";
+        string materials = "필요 재료 : \n";
         for (int i = 0; i < recipe.requiredItems.Length; i++)
         {
             ItemType item = recipe.requiredItems[i];
@@ -39,7 +40,7 @@ public class RecipeButton : MonoBehaviour
         materialsText.text = materials;
     }
 
-    private void OnCraftButtonClicked()
+    private void OnCraftButtonClicked()                        //제작 버튼 클릭 처리
     {
         crafter.TryCraft(recipe, playerInventory);
         UpdateMaterialsText();
